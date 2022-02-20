@@ -12,12 +12,11 @@ temp_data_path = "/home/leo/Learning/Portfolio/temp_data"
 
 
 def StockMetrics(portfolio):
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
     profit_per = portfolio.pl.sum()/portfolio.t_value.sum() * 100
-    col1.metric("Gain",f"+{round(profit_per,2)}%")
-    col2.metric("P&L in ₹ ", f"₹ {round(portfolio.pl.sum(),2)}")
-    col3.metric("Current value of portfolio ₹",f"₹ {round(portfolio.cu_t_value.sum(),2)}")
-    col4.metric("Invested value of portfolio ₹",f"₹ {round(portfolio.t_value.sum(),2)}")
+    col1.metric("P&L in ₹ ", f"₹ {round(portfolio.pl.sum(),2)}",delta =f"{round(profit_per,2)}%")
+    col2.metric("Current value of portfolio ₹",f"{round(portfolio.cu_t_value.sum(),2)}")
+    col3.metric("Invested value of portfolio ₹",f"{round(portfolio.t_value.sum(),2)}")
 
 def Overall_view():
     col1, col2,col3 = st.columns(3)
@@ -30,7 +29,7 @@ def Overall_view():
     total_profit = total_current - total_invested
     total_profit_pert = total_profit / total_invested *100
 
-    col1.metric("P&L in ₹ ", f"₹ {round(total_profit,2)}",delta=f"{round(total_profit_pert,2)} %")
+    col1.metric("P&L in ₹ ", f"{round(total_profit,2)}",delta=f"{round(total_profit_pert,2)} %")
     col2.metric("Total Current Value of Portfolio ₹",f"{round(total_current,2)}")
     col3.metric("Total Invested value of portfolio ₹",f"{round(total_invested,2)}")
 
@@ -57,6 +56,34 @@ def Overall_view():
 
     st.table(result)
 
+    # with st.expand(''):
+    #     result = st.number_input("Amount to invest", min_value=10000, max_value=None, value=0, step=1000, on_change=adjust_ratio(result),)
+    #     st.table(result)
+
+    mutual_fund_show(in_debt,cu_debt,p_debt,p_debt_pert,in_equity,cur_equity,p_equity,p_equity_pert)
+    
+
+def mutual_fund_show(in_debt,cu_debt,p_debt,p_debt_pert,in_equity,cur_equity,p_equity,p_equity_pert):
+    
+    st.markdown(f'##### Mutual Fund Section')
+
+    col1, col2 = st.columns([1, 3])
+
+    mf_pert = (p_debt+p_equity) /(in_debt+in_equity) *100
+    col1.metric("P&L in ₹ ", f"{round(p_debt+p_equity,2)}",delta=f"{round(mf_pert,2)} %")
+
+    d = {
+        'Type':['Debt','Equity'],
+        'Invested':[in_debt,in_equity],
+        "Current":[cu_debt,cur_equity],
+        "Profit":[p_debt,p_equity],
+        "Profit in %":[p_debt_pert,p_equity_pert]
+    }
+
+    result = pd.DataFrame(data=d)
+    col2.table(result)
+
+
 
 # Layout of the Dashboard
 if '__main__'==__name__:
@@ -64,8 +91,6 @@ if '__main__'==__name__:
     st.title("Portfolio Analysis 💰 !!")
 
     Overall_view()
-
-    st.markdown(f'##### Mutual Fund Section')
 
     st.markdown(f'##### Equity Stock Market Section')
     equity_portfolio = portFolioFetcher(stock_path)
