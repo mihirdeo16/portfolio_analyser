@@ -15,7 +15,7 @@ def mutual_fund(mf_path):
 
     invested_equity = mf_equity.Invested.sum()
     current_equity = mf_equity.Current_value.sum()
-    profit_equity = invested_equity - current_equity 
+    profit_equity = current_equity - invested_equity  
     profit_equity_pert = invested_equity - current_equity / invested_equity*100
 
     return invested_debt,current_debt,profit_debt,profit_debt_pert,invested_equity,current_equity,profit_equity,profit_equity_pert
