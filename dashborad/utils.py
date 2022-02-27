@@ -3,6 +3,24 @@ import os
 import math
 import numpy as np
 
+
+def portfolio_adj(df,x,split):
+
+    new_total = df[df['Type']=='Total']['Current'].values + x
+
+    new_equ = new_total * split
+    new_debt = new_total - new_equ
+
+    new_diff_equity = new_equ - df[df['Type']=='Equity']['Current'].values
+    new_diff_debt = new_debt - df[df['Type']=='Debt']['Current'].values
+
+    df['Current Value(New)'] =[float(new_equ),float(new_debt),float(new_total)]
+    df['Investment Split '] =[float(new_diff_equity),float(new_diff_debt),float(new_diff_equity+new_diff_debt)]
+    df['Ratio New(Current)'] =[float(new_equ/new_total *100),float(new_debt/new_total *100),float((new_equ/new_total *100)+(new_debt/new_total *100))] 
+    df.drop(columns=['Investment','Current'],inplace=True)
+
+    return df
+
 def mutual_fund(mf_path):
     mf_df = pd.read_csv(mf_path)
     mf_debt = mf_df[mf_df['Type']=="Debt"]
