@@ -46,9 +46,9 @@ def Overall_view():
 
     d = {
         'Type':['Equity','Debt','Total'],
-        'Invested':[total_equity_invested,total_non_equity_invested,total_invested],
+        'Investment':[total_equity_invested,total_non_equity_invested,total_invested],
         'Current':[total_equity_current,total_non_equity_current,total_current],
-        'Ratio at Invested':[ratio_invested_equity,ratio_invested_debt,ratio_invested_equity+ratio_invested_debt],
+        'Ratio at Investment':[ratio_invested_equity,ratio_invested_debt,ratio_invested_equity+ratio_invested_debt],
         'Ratio at Current':[ratio_current_equity,ratio_current_debt,ratio_current_equity+ratio_current_debt],
     }
     
@@ -56,9 +56,16 @@ def Overall_view():
 
     st.table(result)
 
-    # with st.expand(''):
-    #     result = st.number_input("Amount to invest", min_value=10000, max_value=None, value=0, step=1000, on_change=adjust_ratio(result),)
-    #     st.table(result)
+    with st.expander('Investment calculator :-'):
+        
+        col1, col2 = st.columns([4, 1])
+
+        amount = col1.number_input("Amount to invest :-", min_value=100, max_value=None, value=10000, step=1000)
+        ratio = col2.number_input("Ratio :-", min_value=0, max_value=100, value=85, step=5)/100
+
+        new_results = portfolio_adj(result,amount,ratio)
+        st.table(new_results)
+
 
     mutual_fund_show(in_debt,cu_debt,p_debt,p_debt_pert,in_equity,cur_equity,p_equity,p_equity_pert)
     
