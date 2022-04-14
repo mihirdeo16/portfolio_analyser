@@ -178,12 +178,12 @@ def overall_portfolio(equity_portfolio,mf_metadate):
         'Ratio at Current':[ratio_current_equity,ratio_current_debt,ratio_current_equity+ratio_current_debt],
     }
     
-    portfolio_df = pd.DataFrame(data=temp_d)
-
+    portfolio_df = pd.DataFrame(data=temp_d).round(2)
+    portfolio_df = portfolio_df.round(1)
     return {
         'total_profit':round(total_profit,2),
         'total_profit_pert':round(total_profit_pert,2),
-        'total_current':total_current,
+        'total_current':round(total_current,2), 
         'total_invested':round(total_invested,2),
         'portfolio_df':portfolio_df
     }

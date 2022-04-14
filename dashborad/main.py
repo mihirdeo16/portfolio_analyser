@@ -5,6 +5,7 @@ import numpy as np
 from utils import *
 from datafetcher import DataFetcher
 import datetime
+st.set_page_config(layout="wide")
 
 
 
@@ -64,6 +65,7 @@ if '__main__'==__name__:
     mf_path = "/home/leo/FinTech/Portfolio/data/MF_Data.csv"
     temp_data_path = "/home/leo/FinTech/Portfolio/temp_data"
     symbols_to_igonre=['GOLDBEES', 'ICICIGOLD']
+    isNew = False
     pd.set_option('display.float_format', '{:.2f}'.format)
 
     # Calculate the date
@@ -72,7 +74,7 @@ if '__main__'==__name__:
 
     # Take the Symbols
     symbols = symbol_extract(stock_path,symbols_to_igonre)
-    result_dict = FetchData(symbols,start_date.strftime('%d-%m-%Y'),end_date.strftime('%d-%m-%Y'),temp_data_path,isNew=False)
+    result_dict = FetchData(symbols,start_date.strftime('%d-%m-%Y'),end_date.strftime('%d-%m-%Y'),temp_data_path,isNew=isNew)
     equity_portfolio = portFolioFetcher(stock_path,symbols_to_igonre,temp_data_path)
     mf_portfolio = mutual_fund(mf_path)
     comp_portfolio = overall_portfolio(equity_portfolio,mf_portfolio)
