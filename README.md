@@ -21,4 +21,5 @@ Start the application
 streamlit run dashboard/main.py
 ```
 
+![image](https://user-images.githubusercontent.com/58660351/205416082-abcd7ab3-e8fd-47dc-9080-fd8630c38900.png)
 
